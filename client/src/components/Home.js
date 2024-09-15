@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
 
 function Home() {
-    return <h1>Home Page</h1>
+    return (
+    <div className="home-container">
+        <div className="home-page">Home Page</div>
+    </div>
+    )
 }
 
 export default Home

@@ -21,3 +21,16 @@
 .nav-item:hover {
   text-decoration: underline;
 }
+
+.home-container {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center;     /* Centers vertically */
+  height: 100vh;           
+  background-color: rgb(108, 107, 107);
+}
+
+.home-page {
+  color: rgb(224, 221, 221);
+  font-size: 2rem; 
+}
