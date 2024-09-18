@@ -13,9 +13,6 @@ function App() {
     <main>
       <Switch>
         <Route exact path="/">
-          <h1>Phase 4 Project</h1>
-        </Route>
-        <Route exact path="/Home">
           <Home />
         </Route>
       </Switch>

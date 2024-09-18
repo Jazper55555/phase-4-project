@@ -5,9 +5,12 @@ import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 function NavBar() {
     return(
         <nav className="navbar">
-            <NavLink to='/home' className="nav-item">
-                Home
+            <div className="logo">
+            <NavLink to='/' className="nav-item">
+                Percussion Playground
             </NavLink>
+            </div>
+            <div className="nav-links">
             <NavLink to='/create-account' className="nav-item">
                 Create Account
             </NavLink>
@@ -17,9 +20,7 @@ function NavBar() {
             <NavLink to='/members' className="nav-item">
                 Members
             </NavLink>
-            <NavLink to='/' className="nav-item">
-                Phase 4 Project
-            </NavLink>
+            </div>
         </nav>
     )
 }

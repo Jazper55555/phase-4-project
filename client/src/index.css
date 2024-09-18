@@ -8,14 +8,27 @@
 .navbar {
   display: flex;
   justify-content: space-around;
-  background-color: white;
+  background-color: rgb(108, 107, 107);
   padding: 10px;
+}
+
+.logo {
+  flex: 1;
+  font-size: xx-large;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-style: italic;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px
 }
 
 .nav-item {
   text-decoration: none;
-  color: rgb(96, 94, 94);
+  color: whitesmoke;
   padding: 10px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .nav-item:hover {
@@ -33,4 +46,5 @@
 .home-page {
   color: rgb(224, 221, 221);
   font-size: 2rem; 
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
