@@ -28,7 +28,8 @@ class Members(Resource):
                 'id': member.id,
                 'name': member.name,
                 'email': member.email,
-                'age': member.age
+                'age': member.age,
+                'avatar': member.avatar
             }
             response.append(member_data)
 

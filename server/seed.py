@@ -2,6 +2,8 @@
 
 # Standard library imports
 from random import randint, choice as rc
+import requests
+
 
 # Remote library imports
 from faker import Faker
@@ -15,15 +17,17 @@ from models import db, Member, Instrument, Review
 
 def create_members():
     members = []
-    for _ in range(25):
+    for _ in range(50):
         name = fake.name()
         first_name, last_name = name.split(' ')[:2]
         email = f'{first_name.lower()}.{last_name.lower()}@percplay.com'
+        random_avatar = f"https://ui-avatars.com/api/?name={name.replace(' ', '+')}&rounded=true"
 
         m = Member(
             name=name,
             email=email,
-            age=randint(18, 100)
+            age=randint(18, 100),
+            avatar=random_avatar
         )
         members.append(m)
 
@@ -49,7 +53,7 @@ def create_instruments():
     return instruments
 
 if __name__ == '__main__':
-    fake = Faker()
+    # fake = Faker()
     with app.app_context():
         print("Starting seed...")
         # Seed code goes here!

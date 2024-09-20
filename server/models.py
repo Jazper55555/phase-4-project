@@ -11,6 +11,7 @@ class Member(db.Model, SerializerMixin):
     name = db.Column(db.String)
     email = db.Column(db.String, unique=True)
     age = db.Column(db.Integer)
+    avatar = db.Column(db.String)
 
     def __repr__(self):
         return f'<Member {self.id}: {self.name}>'

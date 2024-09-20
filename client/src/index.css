@@ -1,22 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 :root {
   --bg: #282c34;
   --header: #fff;
-  --link: #61dafb;
+  --link: black;
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
 .navbar {
   display: flex;
   justify-content: space-around;
-  background-color: rgb(108, 107, 107);
+  background-color: rgb(92, 92, 92);
   padding: 10px;
 }
 
 .logo {
   flex: 1;
-  font-size: xx-large;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  font-style: italic;
+  font-size: x-large;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
+}
+
+.logo-content {
+  display: flex;
+  align-items: center;
+}
+
+.logo-content .logo-image {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.logo a:hover {
+  text-decoration: underline;
+  color: whitesmoke;
+}
+
+.logo a {
+  color: whitesmoke;
+  text-decoration: none; /* Remove underline */
 }
 
 .nav-links {
@@ -47,4 +73,46 @@
   color: rgb(224, 221, 221);
   font-size: 2rem; 
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.members-container {
+  padding: 20px;
+  text-align: center;
+  background-color: rgb(108, 107, 107);
+}
+
+.members-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 50px;
+  padding: 0;
+  list-style: none;
+}
+
+.member-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #f7f7f7; */
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.member-info {
+  text-align: center;
+}
+
+.member-name {
+  font-weight: bold;
+  display: block;
+}
+
+.sign-up-link {
+  color: var(--link); /* Use the link color defined in :root */
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sign-up-link:hover {
+  text-decoration: underline;
 }
