@@ -116,3 +116,49 @@
 .sign-up-link:hover {
   text-decoration: underline;
 }
+
+.instruments-container {
+  padding: 20px;
+  text-align: center;
+  background-color: rgb(108, 107, 107);
+}
+
+.instruments-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 50px;
+  padding: 0;
+  list-style: none;
+}
+
+.isntrument-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #f7f7f7; */
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.instrument-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;  /* Ensure the image fits within the given dimensions */
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.instrument-info {
+  text-align: center;
+}
+
+.instrument-name {
+  font-weight: bold;
+  display: block;
+}
+
+.instrument-price {
+  font-weight: bold;
+  display: block;
+}

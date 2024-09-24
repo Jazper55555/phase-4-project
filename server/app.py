@@ -45,7 +45,8 @@ class Instruments(Resource):
             instrument_data = {
                 'id': instrument.id,
                 'name': instrument.name,
-                'price': instrument.price
+                'price': instrument.price,
+                'image': instrument.image
             }
             response.append(instrument_data)
 
