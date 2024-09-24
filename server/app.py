@@ -35,6 +35,38 @@ class Members(Resource):
 
         return make_response(jsonify(response), 200)
 
+    def post(self):
+        name_request = request.get_json().get('name')
+        if not name_request:
+            return make_response(jsonify({'errors': ['Name must include first and last name']}), 400)
+        age_request = request.get_json().get('age')
+        if not isinstance(age_request, int):
+            return make_response(jsonify({'errors': ['Must be 18 or older to sign up']}), 400)
+        first_name, last_name = name_request.split(' ')[:2]
+        email_request = f'{first_name.lower()}.{last_name.lower()}@percplay.com'
+        try:
+            new_member = Member(
+                name = name_request,
+                age = age_request,
+                email = email_request,
+                avatar = f"https://ui-avatars.com/api/?name={name_request.replace(' ', '+')}&rounded=true"
+            )
+            db.session.add(new_member)
+            db.session.commit()
+
+            response = {
+                'id': new_member.id,
+                'name': new_member.name,
+                'age': new_member.age,
+                'email': new_member.email
+            }
+
+            return make_response(jsonify(response), 200)
+
+        except:
+            db.session.rollback()
+            return make_response(jsonify({'errors': ['validation errors']}), 400)
+
 
 class Instruments(Resource):
     def get(self):

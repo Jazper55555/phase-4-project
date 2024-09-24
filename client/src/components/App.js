@@ -5,6 +5,7 @@ import Home from "./Home"
 import NavBar from "./NavBar";
 import Members from "./Members";
 import Instruments from "./Instruments";
+import CreateAccount from "./CreateAccount";
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
         </Route>
         <Route exact path="/instruments">
           <Instruments />
+        </Route>
+        <Route exact path="/create-account">
+          <CreateAccount />
         </Route>
       </Switch>
     </main>
