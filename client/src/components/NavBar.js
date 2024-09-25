@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 
 function NavBar() {

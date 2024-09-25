@@ -65,7 +65,7 @@ class Members(Resource):
 
         except:
             db.session.rollback()
-            return make_response(jsonify({'errors': ['validation errors']}), 400)
+            return make_response(jsonify({'errors': ['User already exists']}), 400)
 
 
 class Instruments(Resource):
