@@ -14,6 +14,12 @@ class Member(db.Model, SerializerMixin):
     age = db.Column(db.Integer)
     avatar = db.Column(db.String)
 
+    # Relationships
+    reviews = db.relationship('Review', back_populates='member', cascade='all, delete-orphan')
+    instruments = association_proxy('reviews', 'instrument', creator=lambda instrument_obj: Review(member=instrument_obj))
+
+    serialize_rules = ('-reviews.member',)
+
     # Validations
     @validates('name')
     def validate_name(self, key, name):
@@ -40,6 +46,12 @@ class Instrument(db.Model, SerializerMixin):
     name = db.Column(db.String)
     price = db.Column(db.Integer)
     image = db.Column(db.String)
+
+    # Relationships
+    reviews = db.relationship('Review', back_populates='instrument', cascade='all, delete-orphan')
+    members = association_proxy('reviews', 'member', creator=lambda member_obj: Review(member=member_obj))
+
+    serialize_rules = ('-reviews.instrument',)
 
     # Validations
     @validates('name')
@@ -68,6 +80,12 @@ class Review(db.Model, SerializerMixin):
     rating = db.Column(db.Integer)
     member_id = db.Column(db.Integer, db.ForeignKey('members.id'))
     instrument_id = db.Column(db.Integer, db.ForeignKey('instruments.id'))
+
+    # Relationships
+    member = db.relationship('Member', back_populates='reviews')
+    instrument = db.relationship('Instrument', back_populates='reviews')
+
+    serialize_rules = ('-member.reviews', '-instrument.reviews')
 
     # Validations
     @validates('content')

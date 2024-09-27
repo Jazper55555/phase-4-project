@@ -88,8 +88,21 @@ class Instruments(Resource):
 class InstrumentsById(Resource):
     def get(self, id):
         selected_instrument = Instrument.query.filter(Instrument.id == id).first()
+        reviews = Review.query.filter_by(instrument_id = id).all()
 
-        return make_response(jsonify(selected_instrument.to_dict()), 200)
+        review_data = [{
+            'id': review.id,
+            'content': review.content,
+            'rating': review.rating,
+        } 
+        for review in reviews]
+
+        response = {
+            'instrument': selected_instrument.to_dict(),
+            'reviews': review_data
+        }
+
+        return make_response(jsonify(response), 200)
 
 
 api.add_resource(Members, '/members')

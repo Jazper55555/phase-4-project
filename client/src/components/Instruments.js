@@ -12,10 +12,10 @@ function Instruments() {
     }, [])
 
     function handleClick(instrument) {
-        console.log(instrument)
         fetch(`/instruments/${instrument.id}`) 
         .then((r) => r.json())
         .then((data) => {
+            console.log(data.reviews)
             setSelectedInstrument(data.instrument)
             setReviews(data.reviews)
         })
@@ -37,9 +37,10 @@ function Instruments() {
                     ))}
                 </ul>
 
-                {/* {selectedInstrument && (
+                {selectedInstrument && (
                 <div className="selected-instrument">
                     <h2>{selectedInstrument.name}</h2>
+                    <br></br>
                     <img src={selectedInstrument.image} alt={`${selectedInstrument.name}'s image`} className="instrument-image" />
                     <p>Price: ${selectedInstrument.price}</p>
                     <h3>Reviews</h3>
@@ -52,7 +53,7 @@ function Instruments() {
                         ))}
                     </ul>
                 </div>
-                )} */}
+                )}
             </div>
     )
 }
