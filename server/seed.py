@@ -64,6 +64,21 @@ def create_instruments():
 
     return instruments
 
+def create_reviews():
+    reviews = []
+    for _ in range(100):
+        review = fake.sentence()
+
+        r = Review(
+            content=review,
+            rating=randint(1, 5),
+            member_id=rc([member.id for member in members]),
+            instrument_id=rc([instrument.id for instrument in instruments])
+        )
+        reviews.append(r)
+
+    return reviews
+
 if __name__ == '__main__':
     # fake = Faker()
     with app.app_context():
@@ -82,6 +97,11 @@ if __name__ == '__main__':
         print('Seeding instruments...')
         instruments = create_instruments()
         db.session.add_all(instruments)
+        db.session.commit()
+
+        print('Seeding reviews...')
+        reviews = create_reviews()
+        db.session.add_all(reviews)
         db.session.commit()
 
         print('Done seeding db')

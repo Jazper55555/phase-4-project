@@ -147,6 +147,7 @@
   object-fit: cover;  /* Ensure the image fits within the given dimensions */
   margin-bottom: 10px;
   position: relative;
+  cursor: pointer;
 }
 
 .instrument-info {

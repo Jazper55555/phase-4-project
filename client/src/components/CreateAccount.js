@@ -6,6 +6,7 @@ function CreateAccount() {
     const [age, setAge] = useState('')
     const [errors, setErrors] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(true)
+    const [successMessage, setSuccessMessage] = useState('')
 
     function handleSubmit(e) {
         e.preventDefault()
@@ -28,9 +29,13 @@ function CreateAccount() {
                     setAge('')
                     setErrors([])
                     setIsModalOpen(false)
+                    setSuccessMessage('Account successfully created!');
                 })
             }   else {
-                r.json().then((err) => setErrors(err.errors))
+                r.json().then((err) => {
+                    setErrors(err.errors)
+                    setSuccessMessage(''); 
+                })
             }
         })
     }
@@ -39,6 +44,7 @@ function CreateAccount() {
         <div className="account-container">
             {/* <button onClick={() => setIsModalOpen(true)}>Create Account</button> */}
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            {successMessage && <p>{successMessage}</p>} 
                 <form onSubmit={handleSubmit}>
                     <h2>Create Account</h2>
                     <div className="name-container">

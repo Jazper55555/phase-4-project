@@ -85,8 +85,16 @@ class Instruments(Resource):
         return make_response(jsonify(response), 200)
 
 
+class InstrumentsById(Resource):
+    def get(self, id):
+        selected_instrument = Instrument.query.filter(Instrument.id == id).first()
+
+        return make_response(jsonify(selected_instrument.to_dict()), 200)
+
+
 api.add_resource(Members, '/members')
 api.add_resource(Instruments, '/instruments')
+api.add_resource(InstrumentsById, '/instruments/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
