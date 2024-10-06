@@ -1,18 +1,12 @@
 #!/usr/bin/env python3
 
-# Standard library imports
-
-# Remote library imports
 from flask import Flask, request, make_response, jsonify
 from flask_restful import Resource
 
-# Local imports
 from config import app, db, api
 
-# Add your model imports
 from models import db, Member, Instrument, Review
 
-# Views go here!
 @app.route('/')
 def home():
     return '<h1>Project Server</h1>'
@@ -88,26 +82,61 @@ class Instruments(Resource):
 class InstrumentsById(Resource):
     def get(self, id):
         selected_instrument = Instrument.query.filter(Instrument.id == id).first()
-        reviews = Review.query.filter_by(instrument_id = id).all()
 
         review_data = [{
             'id': review.id,
             'content': review.content,
             'rating': review.rating,
+            'member': {
+                'name': review.member.name,
+                'avatar': review.member.avatar
+            }
         } 
-        for review in reviews]
+        for review in selected_instrument.reviews]
 
         response = {
-            'instrument': selected_instrument.to_dict(),
+            'instrument': {
+                'id': selected_instrument.id,
+                'name': selected_instrument.name,
+                'price': selected_instrument.price,
+                'image': selected_instrument.image
+            },
             'reviews': review_data
         }
 
         return make_response(jsonify(response), 200)
 
 
+class MembersById(Resource):
+    def get(self, id):
+        selected_member = Member.query.filter(Member.id == id).first()
+
+        review_data = [{
+            'id': review.id,
+            'content': review.content,
+            'rating': review.rating,
+            'instrument': {
+                'name': review.instrument.name,
+                'price': review.instrument.price,
+                'image': review.instrument.image}
+        }
+        for review in selected_member.reviews]
+
+        response = {
+            'member': {
+                'age': selected_member.age,
+                'avatar': selected_member.avatar,
+                'name': selected_member.name,
+            },
+            'reviews': review_data
+            }
+
+        return make_response(jsonify(response), 200)
+
 api.add_resource(Members, '/members')
 api.add_resource(Instruments, '/instruments')
 api.add_resource(InstrumentsById, '/instruments/<int:id>')
+api.add_resource(MembersById, '/members/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

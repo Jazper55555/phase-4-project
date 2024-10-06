@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function Members() {
     const [members, setMembers] = useState([])
+    const history = useHistory()
 
     useEffect(() => {
         fetch('members')
             .then((r) => r.json())
             .then(setMembers)
     }, [])
+
+    function handleClick(member) {
+        history.push(`/members/${member.id}`)
+    }
 
     return (
             <div className="members-container">
@@ -16,7 +22,7 @@ function Members() {
                 <ul className="members-list">
                     {members.map((member) => (
                         <li key={member.id} className="member-item">
-                            <img src={member.avatar} alt={`${member.name}'s Avatar`} className="member-avatar"/>
+                            <img src={member.avatar} alt={`${member.name}'s Avatar`} className="member-avatar" onClick={() => handleClick(member)}/>
                             <div className="member-info">
                             <span className="member-name">{member.name}</span>
                             </div>
