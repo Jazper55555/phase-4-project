@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, request, make_response, jsonify
+from flask import Flask, request, make_response, jsonify, session
 from flask_restful import Resource
 
 from config import app, db, api
@@ -10,6 +10,45 @@ from models import db, Member, Instrument, Review
 @app.route('/')
 def home():
     return '<h1>Project Server</h1>'
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    email = data.get('email')
+    name = data.get('name')
+
+    user = Member.query.filter_by(email=email, name=name).first()
+
+    if user:
+        return jsonify({"success": True})
+    else:
+        return jsonify({"success": False, "errors": ["Invalid credentials"]})
+
+
+@app.route('/reviews', methods=['POST'])
+def add_review():
+    if 'user_id' not in session:
+        return jsonify({"success": False, "errors": ["User not logged in"]}), 401
+
+    user_id = session['user_id']
+    data = request.json
+    content = data.get('content')
+    rating = data.get('rating')
+    instrument_id = data.get('instrument_id')
+
+    if not all([content, rating, instrument_id]):
+        return jsonify({"success": False, "errors": ["Missing data"]}), 400
+
+    try:
+          new_review = Review(content=content, rating=rating, member_id=session['user_id'], instrument_id=instrument_id)
+          db.session.add(new_review)
+          db.session.commit()
+          return jsonify({"success": True, "message": "Review added successfully"})
+    except Exception as e:
+          print("Error occurred:", e)  # Log the error
+          db.session.rollback()
+          return jsonify({"success": False, "errors": ["An error occurred while adding the review"]}), 500
 
 
 class Members(Resource):
@@ -137,6 +176,7 @@ api.add_resource(Members, '/members')
 api.add_resource(Instruments, '/instruments')
 api.add_resource(InstrumentsById, '/instruments/<int:id>')
 api.add_resource(MembersById, '/members/<int:id>')
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

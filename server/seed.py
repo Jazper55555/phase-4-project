@@ -1,16 +1,12 @@
 #!/usr/bin/env python3
 
-# Standard library imports
 from random import randint, choice as rc
 import requests
 
-
-# Remote library imports
 from faker import Faker
 
 fake = Faker()
 
-# Local imports
 from app import app
 from models import db, Member, Instrument, Review
 
@@ -32,6 +28,7 @@ def create_members():
         members.append(m)
 
     return members
+
 
 def create_instruments():
     instruments = [
@@ -64,9 +61,10 @@ def create_instruments():
 
     return instruments
 
+
 def create_reviews():
     reviews = []
-    for _ in range(100):
+    for _ in range(250):
         review = fake.sentence()
 
         r = Review(
@@ -78,6 +76,7 @@ def create_reviews():
         reviews.append(r)
 
     return reviews
+    
 
 if __name__ == '__main__':
     # fake = Faker()

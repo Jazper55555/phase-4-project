@@ -12,6 +12,9 @@ function NavBar() {
             </NavLink>
             </div>
             <div className="nav-links">
+            <NavLink to='/sign-in' className='nav-item'>
+                Sign In
+            </NavLink>
             <NavLink to='/create-account' className="nav-item">
                 Create Account
             </NavLink>

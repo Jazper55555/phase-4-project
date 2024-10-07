@@ -1,4 +1,5 @@
 import { Switch, Route } from "react-router-dom";
+import { useState } from "react";
 
 import Home from "./Home"
 import NavBar from "./NavBar";
@@ -7,8 +8,12 @@ import Instruments from "./Instruments";
 import CreateAccount from "./CreateAccount";
 import InstrumentDetails from "./InstrumentDetails";
 import MemberDetails from "./MemberDetails";
+import SignIn from "./SignIn";
+import AddReview from "./AddReview";
 
 function App() {
+  const [user, setUser] = useState(null)
+
   return (
     <>
     <header>  
@@ -30,9 +35,14 @@ function App() {
         </Route>
         <Route exact path="/instruments/:id">
           <InstrumentDetails />
+          {user && <AddReview user={user} />}
         </Route>
         <Route exact path="/create-account">
           <CreateAccount />
+        </Route>
+        <Route exact path='/sign-in'>
+          <SignIn setUser={setUser} />
+          {user && <AddReview user={user} />}
         </Route>
       </Switch>
     </main>

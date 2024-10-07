@@ -4,7 +4,6 @@ from sqlalchemy.orm import validates
 
 from config import db
 
-# Models go here!
 class Member(db.Model, SerializerMixin):
     __tablename__ = 'members'
 

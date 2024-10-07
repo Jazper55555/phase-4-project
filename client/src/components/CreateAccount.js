@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import Modal from "./SignUpModal";
 
 function CreateAccount() {
-    const [name, setName] = useState('')
-    const [age, setAge] = useState('')
-    const [errors, setErrors] = useState([])
-    const [isModalOpen, setIsModalOpen] = useState(true)
-    const [successMessage, setSuccessMessage] = useState('')
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const [errors, setErrors] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [successMessage, setSuccessMessage] = useState('');
 
     function handleSubmit(e) {
-        e.preventDefault()
+        e.preventDefault();
         const formData = {
-            name, 
+            name,
             age: parseInt(age, 10)
-        }
+        };
 
         fetch('/members', {
             method: 'POST',
@@ -24,27 +24,29 @@ function CreateAccount() {
         })
         .then((r) => {
             if (r.ok) {
-                r.json().then(() => {
-                    setName('')
-                    setAge('')
-                    setErrors([])
-                    setIsModalOpen(false)
+                r.json().then((data) => {
+                    setName('');
+                    setAge('');
+                    setErrors([]);
                     setSuccessMessage('Account successfully created!');
-                })
-            }   else {
+                    setIsModalOpen(false); // Optionally close the modal after success
+                });
+            } else {
                 r.json().then((err) => {
-                    setErrors(err.errors)
+                    setErrors(err.errors || ['Unknown error occurred']);
                     setSuccessMessage(''); 
-                })
+                });
             }
         })
+        .catch(() => {
+            setErrors(['Network error']);
+            setSuccessMessage('');
+        });
     }
 
     return (
         <div className="account-container">
-            {/* <button onClick={() => setIsModalOpen(true)}>Create Account</button> */}
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-            {successMessage && <p>{successMessage}</p>} 
                 <form onSubmit={handleSubmit}>
                     <h2>Create Account</h2>
                     <div className="name-container">
@@ -65,17 +67,16 @@ function CreateAccount() {
                             onChange={(e) => setAge(e.target.value)}
                         />
                     </div>
-                    {errors.length > 0 ? 
-                        errors.map((err) => (
-                            <p key={err} style={{color: 'black'}}>{err}</p>
-                        ))
-                    : null}
+                    {errors.length > 0 && errors.map((err, index) => (
+                        <p key={index} style={{color: 'black'}}>{err}</p>
+                    ))}
+                    {successMessage && <p style={{color: 'white'}}>{successMessage}</p>}
                     <br></br>
                     <button type='submit'>Sign Up!</button>
                 </form>
             </Modal>
         </div>
-    )
+    );
 }
 
 export default CreateAccount
