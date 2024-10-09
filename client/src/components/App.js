@@ -1,5 +1,6 @@
 import { Switch, Route } from "react-router-dom";
 import { useState } from "react";
+import { useEffect } from "react";
 
 import Home from "./Home"
 import NavBar from "./NavBar";
@@ -10,14 +11,27 @@ import InstrumentDetails from "./InstrumentDetails";
 import MemberDetails from "./MemberDetails";
 import SignIn from "./SignIn";
 import AddReview from "./AddReview";
+import EditReview from "./EditReview";
 
 function App() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('user', JSON.stringify(user));
+  }, [user]);
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user'); 
+  };
 
   return (
     <>
     <header>  
-      <NavBar/>
+      <NavBar user={user} onLogout={handleLogout}/>
     </header>
     <main>
       <Switch>
@@ -29,6 +43,7 @@ function App() {
         </Route>
         <Route exact path="/members/:id">
           <MemberDetails />
+          {user && <EditReview user={user} />}
         </Route>
         <Route exact path="/instruments">
           <Instruments />
@@ -42,7 +57,6 @@ function App() {
         </Route>
         <Route exact path='/sign-in'>
           <SignIn setUser={setUser} />
-          {user && <AddReview user={user} />}
         </Route>
       </Switch>
     </main>

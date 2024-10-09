@@ -22,6 +22,7 @@ function SignIn({setUser}) {
         if (data.success) {
           setMessage('Log in successful!');
           setUser({name, email})
+          localStorage.setItem('user', JSON.stringify({name, email}))
           setErrors([]);
         } else {
           setErrors(data.errors || ['Login failed']);

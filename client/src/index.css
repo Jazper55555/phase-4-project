@@ -55,10 +55,20 @@
   color: whitesmoke;
   padding: 10px;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .nav-item:hover {
   text-decoration: underline;
+  background-color: transparent;
+}
+
+.logout-button {
+  background-color: transparent; /* Ensure background matches other nav items */
+  padding: 0; /* Adjust padding if necessary to match link appearance */
 }
 
 .home-container {
@@ -370,5 +380,27 @@ button {
 }
 
 button:hover {
+  background-color: #0056b3;
+}
+
+.add-review-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centers the content vertically */
+  align-items: center;     /* Centers the content horizontally */
+  padding: 20px;
+}
+
+.add-review-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-review-container button:hover {
   background-color: #0056b3;
 }

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
 
-function InstrumentDetails() {
+function InstrumentDetails({user}) {
     const {id} = useParams()
     const [instrument, setInstrument] = useState(null)
     const [reviews, setReviews] = useState([])
+    const history = useHistory()
 
     useEffect(() => {
         fetch(`/instruments/${id}`)
@@ -12,7 +13,6 @@ function InstrumentDetails() {
         .then((data) => {
             setInstrument(data.instrument)
             setReviews(data.reviews)
-            console.log(data.reviews)
         })
     }, [id])
 
@@ -33,6 +33,10 @@ function InstrumentDetails() {
       
         return <div>{stars}</div>;
       }
+
+    const handleEdit = (reviewId) => {
+        history.push(`/edit-review/${reviewId}`)
+    }
 
     return (
         <div className="selected-instrument">
@@ -55,9 +59,13 @@ function InstrumentDetails() {
                             </div>
                         </div>
                         <p className="review-content">{review.content}</p>
+                        {user && user.id === review.member.id && (
+                            <button onClick={() => handleEdit(review.id)}>Edit</button>
+                        )}
                     </li>
                 ))}
             </ul>
+            <br></br>
         </div>
         )
 }

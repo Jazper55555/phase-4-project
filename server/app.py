@@ -21,9 +21,17 @@ def login():
     user = Member.query.filter_by(email=email, name=name).first()
 
     if user:
+        session['user_id'] = user.id
+        session.permanent = True
         return jsonify({"success": True})
     else:
         return jsonify({"success": False, "errors": ["Invalid credentials"]})
+
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.pop('user_id', None)
+    return jsonify({'success': True, 'message': 'Logged out successfully'})
 
 
 @app.route('/reviews', methods=['POST'])
@@ -49,6 +57,40 @@ def add_review():
           print("Error occurred:", e)  # Log the error
           db.session.rollback()
           return jsonify({"success": False, "errors": ["An error occurred while adding the review"]}), 500
+
+
+@app.route('/reviews/<int:id>', methods=['GET'])
+def get_review(id):
+    review = Review.query.get(id)
+    if review:
+        return jsonify({"success": True, "review": {
+            "content": review.content,
+            "rating": review.rating
+        }})
+    else:
+        return jsonify({"success": False, "errors": ["Review not found"]}), 404
+
+
+@app.route('/reviews/<int:id>', methods=['PUT'])
+def update_review(id):
+    if 'user_id' not in session:
+        return jsonify({'success': False, 'errors': ['User not logged in']}), 401
+
+    user_id = session['user_id']    
+    data = request.json
+    review = Review.query.get(id)
+
+    if review is None:
+        return jsonify({'success': False, 'errors': ['Review not found']}), 404
+
+    if review.member_id != user_id:
+        return jsonify({"success": False, "errors": ["You can only edit your own reviews"]}), 403
+
+    review.content = data.get('content', review.content)
+    review.rating = data.get('rating', review.rating)
+    db.session.commit()
+
+    return jsonify({"success": False, "errors": ["Review not found"]}), 404
 
 
 class Members(Resource):
@@ -171,6 +213,7 @@ class MembersById(Resource):
             }
 
         return make_response(jsonify(response), 200)
+        
 
 api.add_resource(Members, '/members')
 api.add_resource(Instruments, '/instruments')

@@ -1,18 +1,36 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-function AddReview({ user }) {
+function EditReview({ user }) {
   const [content, setContent] = useState('');
   const [rating, setRating] = useState('');
   const [message, setMessage] = useState('');
-  const {id: instrumentId} = useParams()
+  const { id: reviewId } = useParams(); // Assume the route provides the review ID
+
+  useEffect(() => {
+    fetch(`/reviews/${reviewId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+            if (data.review.member_id !== user.id) {
+                setMessage('You can only edit your own reviews.');
+                return;
+              }
+            setContent(data.review.content);
+            setRating(data.review.rating);
+        }   else {
+            setMessage('Failed to load review.');
+        }
+      })
+      .catch(() => setMessage('Network error'));
+  }, [reviewId, user.id]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    const reviewData = { content, rating: parseInt(rating, 10), instrument_id: instrumentId };
+    const reviewData = { content, rating: parseInt(rating, 10) };
 
-    fetch('/reviews', {
-      method: 'POST',
+    fetch(`/reviews/${reviewId}`, {
+      method: 'PUT', 
       headers: {
         'Content-Type': 'application/json'
       },
@@ -21,9 +39,7 @@ function AddReview({ user }) {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        setMessage('Review added successfully!');
-        setContent('');
-        setRating('');
+        setMessage('Review updated successfully!');
       } else {
         setMessage(data.errors.join(', '));
       }
@@ -32,14 +48,13 @@ function AddReview({ user }) {
   }
 
   if (!user) {
-    return <p>Please log in to add a review.</p>;
+    return <p>Please log in to edit a review.</p>;
   }
 
   return (
-    <div className="add-review-container">
-      <h2>Add Review</h2>
+    <div className="edit-review-container">
+      <h2>Edit Review</h2>
       <form onSubmit={handleSubmit}>
-        <br></br>
         <div>
           <label htmlFor='content'>Review</label>
           <input
@@ -49,7 +64,6 @@ function AddReview({ user }) {
             onChange={(e) => setContent(e.target.value)}
           />
         </div>
-        <br></br>
         <div>
           <label htmlFor='rating'>Rating</label>
           <input
@@ -60,13 +74,11 @@ function AddReview({ user }) {
             min="1" max="5"
           />
         </div>
-        <br></br>
         {message && <p>{message}</p>}
-        <br></br>
-        <button type='submit'>Submit Review</button>
+        <button type='submit'>Update Review</button>
       </form>
     </div>
   );
 }
 
-export default AddReview;
+export default EditReview;

@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
+import { useState } from "react";
 
-function NavBar() {
+function NavBar({user, onLogout}) {
+
     return(
         <nav className="navbar">
             <div className="logo">
@@ -12,9 +14,6 @@ function NavBar() {
             </NavLink>
             </div>
             <div className="nav-links">
-            <NavLink to='/sign-in' className='nav-item'>
-                Sign In
-            </NavLink>
             <NavLink to='/create-account' className="nav-item">
                 Create Account
             </NavLink>
@@ -24,6 +23,16 @@ function NavBar() {
             <NavLink to='/members' className="nav-item">
                 Members
             </NavLink>
+            {!user && (
+            <NavLink to="/sign-in" className="nav-item">
+            Sign In
+            </NavLink>
+            )}
+            {user && (
+            <button onClick={onLogout} className="nav-item logout-button">
+            Logout
+            </button>
+            )}
             </div>
         </nav>
     )
