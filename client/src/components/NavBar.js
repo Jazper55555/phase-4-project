@@ -1,7 +1,13 @@
-import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
-import { useState } from "react";
+import { NavLink, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function NavBar({user, onLogout}) {
+    const history = useHistory()
+
+    const handleProfileClick = () => {
+        if (user) {
+            history.push(`/members/${user.id}`)
+        }
+    }
 
     return(
         <nav className="navbar">
@@ -29,9 +35,10 @@ function NavBar({user, onLogout}) {
             </NavLink>
             )}
             {user && (
-            <button onClick={onLogout} className="nav-item logout-button">
-            Logout
-            </button>
+            <div>
+            <button onClick={handleProfileClick} className="nav-item">My Profile</button>
+            <button onClick={onLogout} className="nav-item logout-button">Logout</button>
+            </div>
             )}
             </div>
         </nav>

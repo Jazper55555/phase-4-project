@@ -67,8 +67,8 @@
 }
 
 .logout-button {
-  background-color: transparent; /* Ensure background matches other nav items */
-  padding: 0; /* Adjust padding if necessary to match link appearance */
+  background-color: transparent; 
+  padding: 5; 
 }
 
 .home-container {

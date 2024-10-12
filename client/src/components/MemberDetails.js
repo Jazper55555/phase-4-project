@@ -15,9 +15,6 @@ function MemberDetails({ user }) {
       .then((data) => {
         setMember(data.member);
         setReviews(data.reviews || []);
-        data.reviews.forEach(review => {
-            console.log(review.member_id)
-        });
       });
   }, [id]);
 
@@ -25,6 +22,22 @@ function MemberDetails({ user }) {
     setEditingReviewId(review.id);
     setEditedContent(review.content);
   };
+
+  const handleDeleteClick = (reviewId) => {
+    fetch(`/reviews/${reviewId}`, {
+      method: 'DELETE'
+    })
+    .then((response) => {
+      if (response.ok) {
+        setReviews(reviews.filter(review => review.id !== reviewId));
+      } else {
+        return response.json().then((data) => {
+          console.error(data.errors);
+        });
+      }
+    })
+    .catch(() => console.error('Network error'));
+  }
 
   const handleSaveClick = (reviewId) => {
     const updatedReview = { content: editedContent };
@@ -107,7 +120,10 @@ function MemberDetails({ user }) {
               editingReviewId === review.id ? (
                 <button className='edit-button' onClick={() => handleSaveClick(review.id)}>Save</button>
               ) : (
+                <div className='edit-button'>
                 <button className='edit-button' onClick={() => handleEditClick(review)}>Edit</button>
+                <button className='edit-button' onClick={() => handleDeleteClick(review.id)}>Delete</button>
+                </div>
               )
             )}
           </li>

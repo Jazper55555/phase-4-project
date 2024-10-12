@@ -70,6 +70,17 @@ def get_review(id):
     else:
         return jsonify({"success": False, "errors": ["Review not found"]}), 404
 
+@app.route('/reviews/<int:id>', methods=['DELETE'])
+def delete_review(id):
+    review = Review.query.get(id)
+    if review:
+        db.session.delete(review)
+        db.session.commit()
+        return make_response('', 204)
+    else:
+        return make_response(jsonify({'error': 'Review not found'}), 404)
+
+
 
 @app.route('/reviews/<int:id>', methods=['PUT'])
 def update_review(id):
