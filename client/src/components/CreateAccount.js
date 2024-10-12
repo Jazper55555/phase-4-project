@@ -29,7 +29,7 @@ function CreateAccount() {
                     setAge('');
                     setErrors([]);
                     setSuccessMessage('Account successfully created!');
-                    setIsModalOpen(false); // Optionally close the modal after success
+                    setIsModalOpen(false); 
                 });
             } else {
                 r.json().then((err) => {
@@ -49,6 +49,7 @@ function CreateAccount() {
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <form onSubmit={handleSubmit}>
                     <h2>Create Account</h2>
+                    <br></br>
                     <div className="name-container">
                         <label htmlFor='name'>Name</label>
                         <input

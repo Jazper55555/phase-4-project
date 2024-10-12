@@ -191,14 +191,10 @@
 
 .name-container {
   padding: 10px;
-  /* text-align: left; */
-  /* background-color: rgb(108, 107, 107); */
 }
 
 .age-container {
   padding: 20px;
-  /* text-align: center; */
-  /* background-color: rgb(108, 107, 107); */
 }
 
 .modal-overlay {
@@ -224,15 +220,15 @@
 
 .modal-close {
   position: absolute;
-  top: 10px;
+  top: 16px;
   right: 10px;
   background: none;
   border: none;
   font-size: 1 rem;
   cursor: pointer;
+  background-color: transparent;
 }
 
-/* Animations */
 @keyframes fadeIn {
   from {
       opacity: 0;
