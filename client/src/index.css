@@ -322,6 +322,31 @@
   padding: 20px;
 }
 
+.edit-review-box {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 1rem;
+  background-color: #f7f7f7;
+}
+
+.edit-button {
+  align-self: flex-end; 
+  margin-left: auto;
+  padding: 10px 15px;
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background-color: transparent;
+}
+
 .member-name {
   text-align: center;
 }

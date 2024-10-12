@@ -11,7 +11,7 @@ import InstrumentDetails from "./InstrumentDetails";
 import MemberDetails from "./MemberDetails";
 import SignIn from "./SignIn";
 import AddReview from "./AddReview";
-import EditReview from "./EditReview";
+
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -42,8 +42,7 @@ function App() {
           <Members />
         </Route>
         <Route exact path="/members/:id">
-          <MemberDetails />
-          {user && <EditReview user={user} />}
+          <MemberDetails user={user}/>
         </Route>
         <Route exact path="/instruments">
           <Instruments />

@@ -23,7 +23,7 @@ def login():
     if user:
         session['user_id'] = user.id
         session.permanent = True
-        return jsonify({"success": True})
+        return jsonify({"success": True, 'user_id': user.id})
     else:
         return jsonify({"success": False, "errors": ["Invalid credentials"]})
 
@@ -90,7 +90,7 @@ def update_review(id):
     review.rating = data.get('rating', review.rating)
     db.session.commit()
 
-    return jsonify({"success": False, "errors": ["Review not found"]}), 404
+    return jsonify({"success": True, "message": "Review updated successfully"})
 
 
 class Members(Resource):
@@ -196,6 +196,7 @@ class MembersById(Resource):
             'id': review.id,
             'content': review.content,
             'rating': review.rating,
+            'member_id': review.member_id,
             'instrument': {
                 'name': review.instrument.name,
                 'price': review.instrument.price,
@@ -215,10 +216,28 @@ class MembersById(Resource):
         return make_response(jsonify(response), 200)
         
 
+class Reviews(Resource):
+    def get(self):
+        reviews = Review.query.all()
+        response = []
+
+        for review in reviews:
+            review_data = {
+                'id': review.id,
+                'content': review.content,
+                'rating': review.rating,
+                'member_id': review.member_id,
+                'instrument_id': review.instrument_id
+            }
+            response.append(review_data)
+
+        return make_response(jsonify(response), 200)        
+
 api.add_resource(Members, '/members')
 api.add_resource(Instruments, '/instruments')
 api.add_resource(InstrumentsById, '/instruments/<int:id>')
 api.add_resource(MembersById, '/members/<int:id>')
+api.add_resource(Reviews, '/reviews')
 
 
 if __name__ == '__main__':

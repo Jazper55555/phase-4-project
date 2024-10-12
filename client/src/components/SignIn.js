@@ -21,8 +21,8 @@ function SignIn({setUser}) {
       .then(data => {
         if (data.success) {
           setMessage('Log in successful!');
-          setUser({name, email})
-          localStorage.setItem('user', JSON.stringify({name, email}))
+          setUser({id: data.user_id, name, email})
+          localStorage.setItem('user', JSON.stringify({id: data.user_id, name, email}))
           setErrors([]);
         } else {
           setErrors(data.errors || ['Login failed']);
