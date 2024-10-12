@@ -73,15 +73,23 @@
 
 .home-container {
   display: flex;
-  justify-content: center; /* Centers horizontally */
-  align-items: center;     /* Centers vertically */
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;     
   height: 100vh;           
   background-color: rgb(108, 107, 107);
 }
 
-.home-page {
-  color: rgb(224, 221, 221);
+.home-header {
+  margin-bottom: 10px;
+  color: whitesmoke;
   font-size: 2rem; 
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.home-content {
+  color: whitesmoke;
+  font-size: 1rem; 
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
@@ -103,14 +111,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-color: #f7f7f7; */
   padding: 10px;
   border-radius: 8px;
 }
 
 .member-avatar {
   border-radius: 50%;
-  object-fit: cover;  /* Ensure the image fits within the given dimensions */
+  object-fit: cover;  
   margin-bottom: 10px;
   position: relative;
   cursor: pointer;
@@ -126,7 +133,7 @@
 }
 
 .sign-up-link {
-  color: var(--link); /* Use the link color defined in :root */
+  color: var(--link); 
   text-decoration: none;
   cursor: pointer;
 }
@@ -153,7 +160,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-color: #f7f7f7; */
   padding: 20px;
   border-radius: 8px;
 }
@@ -162,7 +168,7 @@
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  object-fit: cover;  /* Ensure the image fits within the given dimensions */
+  object-fit: cover;  
   margin-bottom: 10px;
   position: relative;
   cursor: pointer;
@@ -356,15 +362,14 @@
 }
 
 body {
-  margin: 0; /* Remove default margin */
-  height: 100vh; /* Ensure body covers the full viewport height */
-  background-color: rgba(0, 0, 0, 0.5); /* Set your desired background color */
+  margin: 0;
+  height: 100vh; 
+  background-color: rgba(0, 0, 0, 0.5); 
 }
 
 .signin-container {
   max-width: 400px;
   margin: auto;
-  /* background-color: rgba(0, 0, 0, 0.5); */
   height: 100vh; 
   width: 100%;          
 }
@@ -380,7 +385,7 @@ body {
 }
 
 .form-field label {
-  flex: 0 0 80px; /* Fixed width for the label */
+  flex: 0 0 80px; 
   font-weight: bold;
 }
 
@@ -407,8 +412,8 @@ button:hover {
 .add-review-container {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centers the content vertically */
-  align-items: center;     /* Centers the content horizontally */
+  justify-content: center; 
+  align-items: center;     
   padding: 20px;
 }
 
