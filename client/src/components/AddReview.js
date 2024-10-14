@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams } from "react-router-dom";
 
 function AddReview({ user }) {
   const [content, setContent] = useState('');

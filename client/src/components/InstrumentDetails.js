@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useParams } from "react-router-dom";
 
 function InstrumentDetails({user}) {
     const {id} = useParams()

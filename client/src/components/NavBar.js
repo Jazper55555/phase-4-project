@@ -1,4 +1,4 @@
-import { NavLink, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { NavLink, useHistory } from "react-router-dom";
 
 function NavBar({user, onLogout}) {
     const history = useHistory()

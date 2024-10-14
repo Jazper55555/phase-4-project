@@ -24,7 +24,7 @@ function CreateAccount() {
         })
         .then((r) => {
             if (r.ok) {
-                r.json().then((data) => {
+                r.json().then(() => {
                     setName('');
                     setAge('');
                     setErrors([]);
@@ -81,3 +81,87 @@ function CreateAccount() {
 }
 
 export default CreateAccount
+
+// import React, { useState } from "react";
+// import Modal from "./SignUpModal";
+// import { Formik, Field, Form, ErrorMessage } from "formik";
+// import * as Yup from "yup";
+
+// function CreateAccount() {
+//   const [isModalOpen, setIsModalOpen] = useState(true);
+//   const [successMessage, setSuccessMessage] = useState('');
+
+//   const validationSchema = Yup.object({
+//     name: Yup.string()
+//       .required("Name is required")
+//       .max(50),
+//     age: Yup.number()
+//       .typeError("Age must be a number")
+//       .required("Age is required")
+//       .integer("Age must be an integer")
+//       .min(18),
+//   });
+
+//   function handleFormikSubmit(values, actions) {
+//     fetch('/members', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(values),
+//     })
+//     .then((r) => {
+//       if (r.ok) {
+//         r.json().then(() => {
+//           actions.resetForm();
+//           setSuccessMessage('Account successfully created!');
+//           setIsModalOpen(false);
+//         });
+//       } else {
+//         r.json().then((err) => {
+//           actions.setErrors({ api: err.errors || ['Unknown error occurred'] });
+//           setSuccessMessage('');
+//         });
+//       }
+//     })
+//     .catch(() => {
+//       actions.setErrors({ api: ['Network error'] });
+//       setSuccessMessage('');
+//     });
+//   }
+
+//   return (
+//     <div className="account-container">
+//       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+//         <Formik
+//           initialValues={{ name: '', age: '' }}
+//           validationSchema={validationSchema}
+//           onSubmit={handleFormikSubmit}
+//         >
+//           {({ errors }) => (
+//             <Form>
+//               <h2>Create Account</h2>
+//               <br />
+//               <div className="name-container">
+//                 <label htmlFor="name">Name</label>
+//                 <Field name="name" type="text" />
+//                 <ErrorMessage name="name" component="div" style={{ color: 'black' }} />
+//               </div>
+//               <div className="age-container">
+//                 <label htmlFor="age">Age</label>
+//                 <Field name="age" type="text" />
+//                 <ErrorMessage name="age" component="div" style={{ color: 'black' }} />
+//               </div>
+//               {errors.api && <p style={{ color: 'black' }}>{errors.api}</p>}
+//               {successMessage && <p style={{ color: 'white' }}>{successMessage}</p>}
+//               <br />
+//               <button type="submit">Sign Up!</button>
+//             </Form>
+//           )}
+//         </Formik>
+//       </Modal>
+//     </div>
+//   );
+// }
+
+// export default CreateAccount;

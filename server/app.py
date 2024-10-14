@@ -54,9 +54,34 @@ def add_review():
           db.session.commit()
           return jsonify({"success": True, "message": "Review added successfully"})
     except Exception as e:
-          print("Error occurred:", e)  # Log the error
+          print("Error occurred:", e)  
           db.session.rollback()
           return jsonify({"success": False, "errors": ["An error occurred while adding the review"]}), 500
+
+
+@app.route('/instruments', methods=['POST'])
+def add_instrument():
+    if 'user_id' not in session:
+        return jsonify({"success": False, "errors": ["User not logged in"]}), 401
+
+    user_id = session['user_id']
+    data = request.json
+    name = data.get('name')
+    price = data.get('price')
+    image = data.get('image')
+
+    if not all([name, price, image]):
+        return jsonify({"success": False, "errors": ["Missing data"]}), 400
+
+    try:
+          new_instrument = Instrument(name=name, price=price, image=image)
+          db.session.add(new_instrument)
+          db.session.commit()
+          return jsonify({"success": True, "message": "Instrument added successfully"})
+    except Exception as e:
+          print("Error occurred:", e) 
+          db.session.rollback()
+          return jsonify({"success": False, "errors": ["An error occurred while adding the instrument"]}), 500
 
 
 @app.route('/reviews/<int:id>', methods=['GET'])
@@ -209,6 +234,7 @@ class MembersById(Resource):
             'rating': review.rating,
             'member_id': review.member_id,
             'instrument': {
+                'id': review.instrument.id,
                 'name': review.instrument.name,
                 'price': review.instrument.price,
                 'image': review.instrument.image}
@@ -217,6 +243,7 @@ class MembersById(Resource):
 
         response = {
             'member': {
+                'id': selected_member.id,
                 'age': selected_member.age,
                 'avatar': selected_member.avatar,
                 'name': selected_member.name,

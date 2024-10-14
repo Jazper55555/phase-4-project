@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams, useHistory } from "react-router-dom";
+import AddInstrument from "./AddInstrument";
 
 function MemberDetails({ user }) {
   const { id } = useParams();
+  const history = useHistory()
   const [member, setMember] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [showReviews, setShowReviews] = useState(false);
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [editedContent, setEditedContent] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [instruments, setInstruments] = useState([])
 
   useEffect(() => {
     fetch(`/members/${id}`)
@@ -15,8 +19,22 @@ function MemberDetails({ user }) {
       .then((data) => {
         setMember(data.member);
         setReviews(data.reviews || []);
+        const uniqueInstruments = Array.from(
+          new Set((data.reviews || []).map(review => review.instrument.id))
+        ).map(id => {
+          return data.reviews.find(review => review.instrument.id === id).instrument;
+        });
+        setInstruments(uniqueInstruments);
       });
   }, [id]);
+
+  const handleReviewsClick = () => setShowReviews(true);
+
+  const handleInstrumentsClick = () => setShowReviews(false)
+
+  const handleAddInstrument = (newInstrument) => {
+    setInstruments([...instruments, newInstrument]);
+  };
 
   const handleEditClick = (review) => {
     setEditingReviewId(review.id);
@@ -86,49 +104,74 @@ function MemberDetails({ user }) {
     return <div>{stars}</div>;
   }
 
+  function handleImageClick(instrument) {
+    history.push(`/instruments/${instrument.id}`)
+  }
+
   return (
     <div className="selected-member">
       <h2 className="member-name">{member.name}</h2>
       <br />
       <img src={member.avatar} alt={`${member.name}'s avatar`} className="member-image" />
-      <br />
-      <br />
-      <h3>Instruments/Reviews</h3>
+      <button className="member-reviews-button" onClick={handleReviewsClick}>Reviews</button>
+      <button className="member-instruments-button" onClick={handleInstrumentsClick}>Instruments</button>
       <br />
       {successMessage && <p className="success-message">{successMessage}</p>}
-      <ul className="reviews-list">
-        {reviews.map((review) => (
-          <li key={review.id} className="review-item">
-            <div className="review-header">
-              <img src={review.instrument.image} alt={`${review.instrument.name}'s image`} className="review-avatar" />
-              <div className="review-details">
-                <span className="reviewer-name">{review.instrument.name}</span>
-                <StarRating rating={review.rating} />
-              </div>
-            </div>
-            {editingReviewId === review.id ? (
-              <textarea
-                className="edit-review-box"
-                value={editedContent}
-                onChange={(e) => setEditedContent(e.target.value)}
-                rows="3"
-              />
-            ) : (
-              <p className="review-content">{review.content}</p>
-            )}
-            {user && review.member_id === user.id && (
-              editingReviewId === review.id ? (
-                <button className='edit-button' onClick={() => handleSaveClick(review.id)}>Save</button>
-              ) : (
-                <div className='edit-button'>
-                <button className='edit-button' onClick={() => handleEditClick(review)}>Edit</button>
-                <button className='edit-button' onClick={() => handleDeleteClick(review.id)}>Delete</button>
+
+      {showReviews ? (
+        <ul className="reviews-list">
+          {reviews.map((review) => (
+            <li key={review.id} className="review-item">
+              <div className="review-header">
+                <img src={review.instrument.image} alt={`${review.instrument.name}'s image`} className="review-avatar" />
+                <div className="review-details">
+                  <span className="reviewer-name">{review.instrument.name}</span>
+                  <StarRating rating={review.rating} />
                 </div>
-              )
-            )}
-          </li>
-        ))}
-      </ul>
+              </div>
+              {editingReviewId === review.id ? (
+                <textarea
+                  className="edit-review-box"
+                  value={editedContent}
+                  onChange={(e) => setEditedContent(e.target.value)}
+                  rows="3"
+                />
+              ) : (
+                <p className="review-content">{review.content}</p>
+              )}
+              {user && review.member_id === user.id && (
+                editingReviewId === review.id ? (
+                  <button className='edit-button' onClick={() => handleSaveClick(review.id)}>Save</button>
+                ) : (
+                  <div className='edit-button'>
+                    <button className='edit-button' onClick={() => handleEditClick(review)}>Edit</button>
+                    <button className='edit-button' onClick={() => handleDeleteClick(review.id)}>Delete</button>
+                  </div>
+                )
+              )}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div>
+          <ul className="instruments-list">
+            {instruments.map((instrument) => (
+              <li key={instrument.id} className="instrument-item">
+                <img src={instrument.image} alt={`${instrument.name}'s image`} className="instruments-image" onClick={() => handleImageClick(instrument)} />
+                <div className="instrument-info">
+                  <span className="instruments-name">{instrument.name}</span>
+                  <span className="instrument-price">${instrument.price}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+          {user && member && user.id === member.id && (
+            <div>
+              <AddInstrument user={user} onAddInstrument={handleAddInstrument} />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
