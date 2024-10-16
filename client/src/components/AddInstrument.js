@@ -1,36 +1,51 @@
 import { useState } from "react";
+import {useFormik} from 'formik'
+import * as Yup from 'yup'
 
 function AddInstrument({ user, onAddInstrument }) {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [image, setImage] = useState('');
   const [message, setMessage] = useState('');
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const instrumentData = { name, price: parseFloat(price), image };
+  const validationSchema = Yup.object({
+    name: Yup.string()
+      .required("Name is required")
+      .max(50),
+    price: Yup.number()
+      .typeError("Price must be a number")
+      .required("Price is required")
+      .integer("Price must be an integer")
+      .min(0, "Price must be greater than 0"),
+    image: Yup.string()
+    .required('Image URL is required')
+    });
 
-    fetch('/instruments', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
+    const formik = useFormik({
+      initialValues: {
+          name: '',
+          price: '',
+          image: ''
       },
-      body: JSON.stringify(instrumentData),
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        setMessage('Instrument added successfully!');
-        setName('');
-        setPrice('');
-        setImage('');
-        onAddInstrument(data.instrument);
-      } else {
-        setMessage(data.errors.join(', '));
+      validationSchema: validationSchema,
+      onSubmit: (values, {resetForm}) => {
+        fetch('/instruments', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(values),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            resetForm()
+            setMessage('Instrument added successfully!');
+            onAddInstrument(data.instrument);
+          } else {
+            setMessage(data.errors.join(', '));
+          }
+        })
+        .catch(() => setMessage('Network error'));
       }
     })
-    .catch(() => setMessage('Network error'));
-  }
 
   if (!user) {
     return <p>Please log in to add an instrument.</p>;
@@ -40,15 +55,17 @@ function AddInstrument({ user, onAddInstrument }) {
     <div className="add-instrument-container">
       <h2>Add Instrument</h2>
       <br />
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
         <div>
           <label htmlFor='name'>Name </label>
           <input
             type="text"
             id='name'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            name='name'
+            value={formik.values.name}
+            onChange={formik.handleChange}
           />
+          {formik.errors.name ? <p style={{ color: 'black' }}>{formik.errors.name}</p> : null}
         </div>
         <br />
         <div>
@@ -56,10 +73,12 @@ function AddInstrument({ user, onAddInstrument }) {
           <input
             type="number"
             id='price'
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            name='price'
+            value={formik.values.price}
+            onChange={formik.handleChange}
             min="0"
           />
+          {formik.errors.price ? <p style={{ color: 'black' }}>{formik.errors.price}</p> : null}
         </div>
         <br />
         <div>
@@ -67,9 +86,11 @@ function AddInstrument({ user, onAddInstrument }) {
           <input
             type="text"
             id='image'
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
+            name='image'
+            value={formik.values.image}
+            onChange={formik.handleChange}
           />
+          {formik.errors.image ? <p style={{ color: 'black' }}>{formik.errors.image}</p> : null}
         </div>
         <br />
         {message && <p>{message}</p>}
