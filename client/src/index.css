@@ -409,7 +409,14 @@ body {
 .form-field {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.error-text {
+  color: black;
+  margin-top: 5px; 
+  margin-bottom: 0; 
+  font-size: 12px; 
 }
 
 .form-field label {

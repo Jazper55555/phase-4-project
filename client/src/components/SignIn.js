@@ -1,42 +1,57 @@
 import { useState } from "react";
+import {useFormik} from 'formik'
+import * as Yup from 'yup'
 
 function SignIn({setUser}) {
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
     const [errors, setErrors] = useState([]);
     const [message, setMessage] = useState('');
   
-    function handleSubmit(e) {
-      e.preventDefault();
-      const credentials = { name, email };
+    const validationSchema = Yup.object({
+      name: Yup.string()
+        .required("Name is required")
+        .max(50),
+      email: Yup.string()
+        .required('Email is required')
+        .email('Invalid email format - must include @')
+      });
   
-      fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
+      const formik = useFormik({
+        initialValues: {
+            name: '',
+            email: ''
         },
-        body: JSON.stringify(credentials),
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          setMessage('Log in successful!');
-          setUser({id: data.user_id, name, email})
-          localStorage.setItem('user', JSON.stringify({id: data.user_id, name, email}))
-          setErrors([]);
-        } else {
-          setErrors(data.errors || ['Login failed']);
-          setMessage('');
+        validationSchema: validationSchema,
+        onSubmit: (values, {resetForm}) => {
+          fetch('/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(values),
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              resetForm()
+              setMessage('Log in successful!');
+              const userData = {id: data.user_id, name: values.name, email:values.email}
+              setUser(userData)
+              localStorage.setItem('user', JSON.stringify(userData))
+              setErrors([]);
+            } else {
+              setErrors(data.errors || ['Login failed']);
+              setMessage('');
+            }
+          })
+          .catch(() => setErrors(['Network error']));
         }
       })
-      .catch(() => setErrors(['Network error']));
-    }
   
     return (
         <div className="signin-container">
             <br></br>
           <h2 className="signin-text">Sign In</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={formik.handleSubmit}>
             <br></br>
             <br></br>
             <div className="form-field">
@@ -44,9 +59,11 @@ function SignIn({setUser}) {
               <input
                 type="name"
                 id='name'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                name='name'
+                value={formik.values.name}
+                onChange={formik.handleChange}
               />
+              {formik.errors.name ? <p className='error-text' style={{ color: 'black' }}>{formik.errors.name}</p> : null}
             </div>
             <br></br>
             <div className="form-field">
@@ -54,9 +71,11 @@ function SignIn({setUser}) {
               <input
                 type="email"
                 id='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name='email'
+                value={formik.values.email}
+                onChange={formik.handleChange}
               />
+              {formik.errors.email ? <p className='error-text' style={{ color: 'black' }}>{formik.errors.email}</p> : null}
             </div>
             <br></br>
             <button type='submit'>Sign In</button>

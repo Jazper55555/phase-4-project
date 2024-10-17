@@ -1,35 +1,51 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 function AddReview({ user }) {
-  const [content, setContent] = useState('');
-  const [rating, setRating] = useState('');
+  const { id: instrumentId } = useParams();
   const [message, setMessage] = useState('');
-  const {id: instrumentId} = useParams()
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const reviewData = { content, rating: parseInt(rating, 10), instrument_id: instrumentId };
+  const validationSchema = Yup.object({
+    content: Yup.string()
+      .required("Review content is required")
+      .max(300, "Review can't be longer than 300 characters"),
+    rating: Yup.number()
+      .required("Rating is required")
+      .integer("Rating must be an integer")
+      .min(1, "Rating must be at least 1")
+      .max(5, "Rating can't be more than 5"),
+  });
 
-    fetch('/reviews', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(reviewData),
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        setMessage('Review added successfully!');
-        setContent('');
-        setRating('');
-      } else {
-        setMessage(data.errors.join(', '));
-      }
-    })
-    .catch(() => setMessage('Network error'));
-  }
+  const formik = useFormik({
+    initialValues: {
+      content: '',
+      rating: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values, { resetForm }) => {
+      const reviewData = { ...values, instrument_id: instrumentId };
+
+      fetch('/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reviewData),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          setMessage('Review added successfully!');
+          resetForm();
+        } else {
+          setMessage(data.errors.join(', '));
+        }
+      })
+      .catch(() => setMessage('Network error'));
+    },
+  });
 
   if (!user) {
     return <p>Please log in to add a review.</p>;
@@ -38,31 +54,35 @@ function AddReview({ user }) {
   return (
     <div className="add-review-container">
       <h2>Add Review</h2>
-      <form onSubmit={handleSubmit}>
-        <br></br>
+      <form onSubmit={formik.handleSubmit}>
+        <br />
         <div>
           <label htmlFor='content'>Review</label>
           <input
             type="text"
             id='content'
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            name='content'
+            value={formik.values.content}
+            onChange={formik.handleChange}
           />
+          {formik.errors.content ? <p style={{ color: 'black' }}>{formik.errors.content}</p> : null}
         </div>
-        <br></br>
+        <br />
         <div>
           <label htmlFor='rating'>Rating</label>
           <input
             type="number"
             id='rating'
-            value={rating}
-            onChange={(e) => setRating(e.target.value)}
+            name='rating'
+            value={formik.values.rating}
+            onChange={formik.handleChange}
             min="1" max="5"
           />
+          {formik.errors.rating ? <p style={{ color: 'black' }}>{formik.errors.rating}</p> : null}
         </div>
-        <br></br>
+        <br />
         {message && <p>{message}</p>}
-        <br></br>
+        <br />
         <button type='submit'>Submit Review</button>
       </form>
     </div>
