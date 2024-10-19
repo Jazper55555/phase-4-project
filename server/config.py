@@ -16,7 +16,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.config['SESSION_COOKIE_SECURE'] = True  # Only send cookies over HTTPS
 app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access to cookies
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://phase_4_project_db_b102_user:6xVvd5aMGXYDfMh7Bz9iS2SsHAqDKCXy@dpg-cs87pgm8ii6s73c5j3gg-a.oregon-postgres.render.com/phase_4_project_db_b102'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
