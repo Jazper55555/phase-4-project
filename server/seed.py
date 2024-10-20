@@ -85,8 +85,11 @@ if __name__ == '__main__':
         # Seed code goes here!
         print('Clearing db...')
         Review.query.delete()
+        db.session.commit()
         Member.query.delete()
+        db.session.commit()
         Instrument.query.delete()
+        db.session.commit()
 
         print('Seeding members...')
         members = create_members()
