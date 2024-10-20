@@ -15,14 +15,24 @@ function AddInstrument({ user, onAddInstrument }) {
       .integer("Price must be an integer")
       .min(0, "Price must be greater than 0"),
     image: Yup.string()
-    .required('Image URL is required')
+    .required('Image URL is required'),
+    content: Yup.string()
+      .required('Review content is required'),
+    rating: Yup.number()
+      .typeError('Rating must be a number')
+      .required('Rating is required')
+      .integer('Rating must be an integer')
+      .min(1, 'Rating must be at least 1')
+      .max(5, 'Rating cannot be more than 5'),
     });
 
     const formik = useFormik({
       initialValues: {
           name: '',
           price: '',
-          image: ''
+          image: '',
+          content: '',
+          rating: ''
       },
       validationSchema: validationSchema,
       onSubmit: (values, {resetForm}) => {
@@ -31,7 +41,7 @@ function AddInstrument({ user, onAddInstrument }) {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify({values, member_id: user.id}),
         })
         .then(response => response.json())
         .then(data => {
@@ -93,9 +103,34 @@ function AddInstrument({ user, onAddInstrument }) {
           {formik.errors.image ? <p style={{ color: 'black' }}>{formik.errors.image}</p> : null}
         </div>
         <br />
+        <div>
+          <label htmlFor='content'>Review Content </label>
+          <textarea
+            id='content'
+            name='content'
+            value={formik.values.content}
+            onChange={formik.handleChange}
+          />
+          {formik.errors.content ? <p style={{ color: 'black' }}>{formik.errors.content}</p> : null}
+        </div>
+        <br />
+        <div>
+          <label htmlFor='rating'>Rating </label>
+          <input
+            type="number"
+            id='rating'
+            name='rating'
+            value={formik.values.rating}
+            onChange={formik.handleChange}
+            min="1"
+            max="5"
+          />
+          {formik.errors.rating ? <p style={{ color: 'black' }}>{formik.errors.rating}</p> : null}
+        </div>
+        <br />
         {message && <p>{message}</p>}
         <br />
-        <button type='submit'>Submit Instrument</button>
+        <button type='submit'>Submit Instrument with Review</button>
       </form>
     </div>
   );

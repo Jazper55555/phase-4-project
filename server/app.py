@@ -69,15 +69,22 @@ def add_instrument():
     name = data.get('name')
     price = data.get('price')
     image = data.get('image')
+    content = data.get('content')
+    rating = data.get('rating')
 
-    if not all([name, price, image]):
+    if not all([name, price, image, content, rating]):
         return jsonify({"success": False, "errors": ["Missing data"]}), 400
 
     try:
-          new_instrument = Instrument(name=name, price=price, image=image)
-          db.session.add(new_instrument)
-          db.session.commit()
-          return jsonify({"success": True, "message": "Instrument added successfully"})
+        new_instrument = Instrument(name=name, price=price, image=image)
+        db.session.add(new_instrument)
+        db.session.commit()
+
+        new_review = Review(content=content, rating=rating, member_id=user_id, instrument_id=new_instrument.id)
+        db.session.add(new_review)
+        db.session.commit()
+
+        return jsonify({"success": True, "message": "Instrument added successfully"})
     except Exception as e:
           print("Error occurred:", e) 
           db.session.rollback()
