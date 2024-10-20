@@ -2,6 +2,7 @@
 
 from random import randint, choice as rc
 import requests
+from sqlalchemy import text
 
 from faker import Faker
 
@@ -89,6 +90,15 @@ if __name__ == '__main__':
         Member.query.delete()
         db.session.commit()
         Instrument.query.delete()
+        db.session.commit()
+
+        db.session.execute(text('ALTER SEQUENCE members_id_seq RESTART WITH 1'))
+        db.session.commit()
+
+        db.session.execute(text("ALTER SEQUENCE instruments_id_seq RESTART WITH 1"))
+        db.session.commit()
+
+        db.session.execute(text("ALTER SEQUENCE reviews_id_seq RESTART WITH 1"))
         db.session.commit()
 
         print('Seeding members...')
