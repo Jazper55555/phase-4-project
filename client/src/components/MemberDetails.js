@@ -26,7 +26,7 @@ function MemberDetails({ user }) {
         });
         setInstruments(uniqueInstruments);
       });
-  }, [id]);
+  }, [id, instruments]);
 
   const handleReviewsClick = () => setShowReviews(true);
 

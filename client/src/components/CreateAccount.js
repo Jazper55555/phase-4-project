@@ -26,6 +26,7 @@ function CreateAccount() {
         },
         validationSchema: validationSchema,
         onSubmit: (values, {resetForm}) => {
+            console.log(values)
             fetch('/members', {
             method: 'POST',
             headers: {
@@ -74,7 +75,7 @@ function CreateAccount() {
                     <div className="age-container">
                         <label htmlFor='age'>Age</label>
                         <input
-                            type="text"
+                            type="number"
                             id='age'
                             name='age'
                             value={formik.values.age}
