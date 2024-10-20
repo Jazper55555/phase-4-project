@@ -17,23 +17,25 @@ function MemberDetails({ user }) {
     fetch(`/members/${id}`)
       .then((r) => r.json())
       .then((data) => {
-        setMember(data.member);
+        setMember(data.member || {});
         setReviews(data.reviews || []);
         const uniqueInstruments = Array.from(
           new Set((data.reviews || []).map(review => review.instrument.id))
         ).map(id => {
           return data.reviews.find(review => review.instrument.id === id).instrument;
-        });
+        }).filter(instrument => instrument);
         setInstruments(uniqueInstruments);
       });
-  }, [id, instruments]);
+  }, [id]);
 
   const handleReviewsClick = () => setShowReviews(true);
 
   const handleInstrumentsClick = () => setShowReviews(false)
 
   const handleAddInstrument = (newInstrument) => {
-    setInstruments([...instruments, newInstrument]);
+    if (newInstrument) {
+      setInstruments((prevInstruments) => [...prevInstruments, newInstrument]);
+    }
   };
 
   const handleEditClick = (review) => {
@@ -155,15 +157,24 @@ function MemberDetails({ user }) {
       ) : (
         <div>
           <ul className="instruments-list">
-            {instruments.map((instrument) => (
-              <li key={instrument.id} className="instrument-item">
-                <img src={instrument.image} alt={`${instrument.name}'s image`} className="instruments-image" onClick={() => handleImageClick(instrument)} />
-                <div className="instrument-info">
-                  <span className="instruments-name">{instrument.name}</span>
-                  <span className="instrument-price">${instrument.price}</span>
-                </div>
-              </li>
-            ))}
+          {instruments.map((instrument) => (
+            <li key={instrument.id} className="instrument-item">
+              {instrument && instrument.image ? (
+            <img
+              src={instrument.image}
+              alt={`${instrument.name}'s image`}
+              className="instruments-image"
+              onClick={() => handleImageClick(instrument)}
+            />
+          ) : (
+            <p>No image available</p>
+          )}
+    <div className="instrument-info">
+      <span className="instruments-name">{instrument.name}</span>
+      <span className="instrument-price">${instrument.price}</span>
+    </div>
+  </li>
+))}
           </ul>
           {user && member && user.id === member.id && (
             <div>

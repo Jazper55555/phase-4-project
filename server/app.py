@@ -84,11 +84,11 @@ def add_instrument():
         db.session.add(new_review)
         db.session.commit()
 
-        return jsonify({"success": True, "message": "Instrument added successfully"})
+        return jsonify({"success": True, "message": "Instrument and review added successfully", "instrument": new_instrument.serialize(), "review": new_review.serialize()})
     except Exception as e:
           print("Error occurred:", e) 
           db.session.rollback()
-          return jsonify({"success": False, "errors": ["An error occurred while adding the instrument"]}), 500
+          return jsonify({"success": False, "errors": ["An error occurred while adding the instrument/review"]}), 500
 
 
 @app.route('/reviews/<int:id>', methods=['GET'])

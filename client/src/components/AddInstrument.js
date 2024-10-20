@@ -41,7 +41,14 @@ function AddInstrument({ user, onAddInstrument }) {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({values, member_id: user.id}),
+          body: JSON.stringify({
+            name: values.name,
+            price: values.price,
+            image: values.image,
+            content: values.content,
+            rating: values.rating,
+            member_id: user.id  
+          }),
         })
         .then(response => response.json())
         .then(data => {
