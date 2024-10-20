@@ -84,9 +84,9 @@ if __name__ == '__main__':
         print("Starting seed...")
         # Seed code goes here!
         print('Clearing db...')
+        Review.query.delete()
         Member.query.delete()
         Instrument.query.delete()
-        Review.query.delete()
 
         print('Seeding members...')
         members = create_members()
