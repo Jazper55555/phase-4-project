@@ -82,7 +82,7 @@ function AddInstrument({ user, onAddInstrument }) {
             value={formik.values.name}
             onChange={formik.handleChange}
           />
-          {formik.errors.name ? <p style={{ color: 'black' }}>{formik.errors.name}</p> : null}
+          {formik.errors.name ? <p style={{ color: 'black' }}><br/>{formik.errors.name}</p> : null}
         </div>
         <br />
         <div>
@@ -95,7 +95,7 @@ function AddInstrument({ user, onAddInstrument }) {
             onChange={formik.handleChange}
             min="0"
           />
-          {formik.errors.price ? <p style={{ color: 'black' }}>{formik.errors.price}</p> : null}
+          {formik.errors.price ? <p style={{ color: 'black' }}><br/>{formik.errors.price}</p> : null}
         </div>
         <br />
         <div>
@@ -107,18 +107,22 @@ function AddInstrument({ user, onAddInstrument }) {
             value={formik.values.image}
             onChange={formik.handleChange}
           />
-          {formik.errors.image ? <p style={{ color: 'black' }}>{formik.errors.image}</p> : null}
+          {formik.errors.image ? <p style={{ color: 'black' }}><br/>{formik.errors.image}</p> : null}
         </div>
         <br />
+        <div className="add-instrument-container">
+        <h2>Add Review</h2>
+        </div>
         <div>
           <label htmlFor='content'>Review Content </label>
           <textarea
+            className="edit-review-box"
             id='content'
             name='content'
             value={formik.values.content}
             onChange={formik.handleChange}
           />
-          {formik.errors.content ? <p style={{ color: 'black' }}>{formik.errors.content}</p> : null}
+          {formik.errors.content ? <p style={{ color: 'black' }}><br/>{formik.errors.content}</p> : null}
         </div>
         <br />
         <div>
@@ -132,7 +136,7 @@ function AddInstrument({ user, onAddInstrument }) {
             min="1"
             max="5"
           />
-          {formik.errors.rating ? <p style={{ color: 'black' }}>{formik.errors.rating}</p> : null}
+          {formik.errors.rating ? <p style={{ color: 'black' }}><br/>{formik.errors.rating}</p> : null}
         </div>
         <br />
         {message && <p>{message}</p>}

@@ -67,10 +67,11 @@ function CreateAccount() {
                             type="text"
                             id='name'
                             name='name'
+                            placeholder="First Last"
                             value={formik.values.name}
                             onChange={formik.handleChange}
                         />
-                        {formik.errors.name ? <p style={{ color: 'black' }}>{formik.errors.name}</p> : null}
+                        {formik.errors.name ? <p style={{ color: 'black' }}><br/>{formik.errors.name}</p> : null}
                     </div>
                     <div className="age-container">
                         <label htmlFor='age'>Age</label>
@@ -78,10 +79,11 @@ function CreateAccount() {
                             type="number"
                             id='age'
                             name='age'
+                            placeholder="18 or older"
                             value={formik.values.age}
                             onChange={formik.handleChange}
                         />
-                        {formik.errors.age ? <p style={{ color: 'black' }}>{formik.errors.age}</p> : null}
+                        {formik.errors.age ? <p style={{ color: 'black' }}><br/>{formik.errors.age}</p> : null}
                     </div>
                     {errors.length > 0 && errors.map((err, index) => (
                         <p key={index} style={{color: 'black'}}>{err}</p>

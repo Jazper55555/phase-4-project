@@ -65,7 +65,7 @@ function AddReview({ user }) {
             value={formik.values.content}
             onChange={formik.handleChange}
           />
-          {formik.errors.content ? <p style={{ color: 'black' }}>{formik.errors.content}</p> : null}
+          {formik.errors.content ? <p style={{ color: 'black' }}><br/>{formik.errors.content}</p> : null}
         </div>
         <br />
         <div>
@@ -78,7 +78,7 @@ function AddReview({ user }) {
             onChange={formik.handleChange}
             min="1" max="5"
           />
-          {formik.errors.rating ? <p style={{ color: 'black' }}>{formik.errors.rating}</p> : null}
+          {formik.errors.rating ? <p style={{ color: 'black' }}><br/>{formik.errors.rating}</p> : null}
         </div>
         <br />
         {message && <p>{message}</p>}

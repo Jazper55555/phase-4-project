@@ -60,6 +60,7 @@ function SignIn({setUser}) {
                 type="name"
                 id='name'
                 name='name'
+                placeholder="First Last"
                 value={formik.values.name}
                 onChange={formik.handleChange}
               />
@@ -72,6 +73,7 @@ function SignIn({setUser}) {
                 type="email"
                 id='email'
                 name='email'
+                placeholder="first.last@percplay.com"
                 value={formik.values.email}
                 onChange={formik.handleChange}
               />
