@@ -5,7 +5,7 @@
 - Create a full-stack application using React and Flask with a backend server deployed through Render
 - Create a communal space for drummers/percussionists to talk shop with the myriad of instruments from around the world
 
-## Walkthrough
+### Walkthrough
 
 [![Percussion Playground](/Percussion-Playground-Thumbnail.png)](https://youtu.be/Uvv0jUbXxKY)
 
@@ -260,12 +260,61 @@ This houses all of the components that comrpise the Front-End of the React appli
 └── index.js
 ```
 
+#### `AddInstrument.js`
 
+Allows the user (when logged in) to add (POST) an instrument (with a corresponding review) to the database.
+
+#### `AddReview.js`
+
+Allows the user (when logged in) to add (POST) a review to any instrument (based on its instrument_id) to the database.
+
+#### `App.js`
+
+Contains the major components that are housed within `NavBar.js` and connects them to their exact path (URL) through _React Router_. It also handles user login/logout information so specific users can manipulate specific data.
+
+#### `CreateAccount.js`
+
+Allows a new user to create an account (POST) on the webpage which consequently allows them to log in with their user credentials.
+
+#### `InstrumentDetails.js`
+
+Displays information regarding a specific instrument (based on its instrument_id) on the webpage (through `fetch`). Also displays a form from `AddReview.js`when a specific user is logged in.
+
+#### `Instruments.js`
+
+Displays all the instruments from the database with their respective images & prices. Each image is clickable allowing you to navigate to `InstrumentDetails.js`.
+
+#### `MemberDetails.js`
+
+Displays information regarding a specific user/member (based on their member_id). Also allows a member (when logged in) to create (POST), edit (PUT), and remove (DELETE) reviews/instruments. `InstrumentDetails.js` is also accessible via each clickable instrument image (based on instrument_id).
+
+#### `Members.js`
+
+Displays all the members from the database with their respective names and avatar. Each image is clickable allowing you to navigate to `MemberDetails.js`.
+
+#### `NavBar.js`
+
+Contains URL pathways for each clickable link in `NavBar.js`. Pathways include:
+
+- Create Account
+- Instruments
+- Members
+- Sign In
+- My Profile
+- Logout
+
+#### `SignIn.js`
+
+Allows a specific user/member to sign in based on their credentials (name & email) giving them the ability to perform CRUD methods via `AddInstrument.js` & `AddReview.js`.
+
+#### `SignUpModal.js`
+
+Houses the <Modal> found in `CreateAccount.js`.
 
 ## Resources
 
-- [Setting up a respository - Atlassian](https://www.atlassian.com/git/tutorials/setting-up-a-repository)
-- [Create a repo- GitHub Docs](https://docs.github.com/en/get-started/quickstart/create-a-repo)
-- [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
-- [Python Circular Imports - StackAbuse](https://stackabuse.com/python-circular-imports/)
-- [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/)
+- [Database Relationship Diagram](https://dbdiagram.io/home)
+- [Flask-SQLAlchemy](https://flask-sqlalchemy.readthedocs.io/en/3.1.x/)
+- [Flask](https://flask.palletsprojects.com/en/3.0.x/)
+- [Python](https://www.python.org/)
+- [SQLite](https://www.sqlite.org/)
