@@ -216,7 +216,7 @@ def getRatings():
         }
         response.append(review_data)
 
-    return make_response(jsonify(fiveStarReviews), 200)
+    return make_response(jsonify(response), 200)
 
 
 class InstrumentsById(Resource):
