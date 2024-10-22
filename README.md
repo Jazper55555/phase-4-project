@@ -78,7 +78,7 @@ Contains all of the RESTful routes connecting the Front-End React Application to
 
 `app.route()` & `class <Name>(Resource)`
 
-The first is mainly utilized for Create, Update, & Delete Methods.
+The first is mainly utilized for CREATE, UPDATE, & DELETE Methods.
 
 ```py
 @app.route('/')
@@ -107,42 +107,106 @@ class Reviews(Resource):
         return make_response(jsonify(response), 200) 
 ```
 
+### `config.py`
 
-#### `config.py`
+#### Flask
+
+There are a number of Flask related packages implemented in the application including `flask_migrate`, `flask_sqlalchemy`, `flask_cors`, & `flask_restful`. Each of these serves a specific purpose in getting the backend Flask application to run smoothly.
+
+```py
+from flask import Flask
+from flask_cors import CORS
+from flask_migrate import Migrate
+from flask_restful import Api
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import MetaData
+import os
+```
+
+#### App
+
+The primary configuration for proper connection to the database comes from `app.config['SQLALCHEMY_DATABASE_URI']`. This connects the Flask application to the online server through the 'External Database URL'.
+
+#### SQLAlchemy & Migrate
+
+By passing `app` (through `Flask`) & `db` (through `SQLAlchemy`) through `Migrate`, we are able to properly instantiate the newly created database.
+
+```py
+metadata = MetaData(naming_convention={
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+})
+db = SQLAlchemy(metadata=metadata)
+migrate = Migrate(app, db)
+db.init_app(app)
+```
 
 #### CORS
 
-CORS (Cross-Origin Resource Sharing) is a system that uses HTTP headers to
-determine whether resources from different servers-of-origin can be accessed. If
-you're using the fetch API to connect your frontend to your Flask backend, you
-need to configure CORS on your Flask application instance. Lucky for us, that
-only takes one line:
+CORS (Cross-Origin Resource Sharing) is configured to connect my Front-End React Application to the backend server deployed through Render.
 
 ```py
 CORS(app)
 
 ```
 
-By default, Flask-CORS enables CORS on all routes in your application with all
-fetching servers. You can also specify the resources that allow CORS. The
-following specifies that routes beginning with `api/` allow CORS from any
-originating server:
+### `inspect_db.py`
+
+This file is used primarily to inspect the tables via the terminal to ensure proper migration of data to/from tables. It connects via the previously mentioned `DATABASE_URI`.
+
+### `models.py`
+
+There are 3 tables/models represented:
+
+- Instrument(s)
+- Member(s)
+- Review(s)
+
+#### Instruments
 
 ```py
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+class Instrument(db.Model, SerializerMixin):
+    __tablename__ = 'instruments'
 
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    price = db.Column(db.Integer)
+    image = db.Column(db.String)
 ```
+This displays the attributes for each instance of `Instrument`.
 
-You can also set this up resource-by-resource by importing and using the
-`@cross_origin` decorator:
+#### Members
 
 ```py
-@app.route("/")
-@cross_origin()
-def howdy():
-  return "Howdy partner!"
+class Member(db.Model, SerializerMixin):
+    __tablename__ = 'members'
 
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    email = db.Column(db.String, unique=True)
+    age = db.Column(db.Integer)
+    avatar = db.Column(db.String)
+ ```
+
+This displays the attributes for each instance of `Member`.
+
+#### Reviews
+
+```py
+class Review(db.Model, SerializerMixin):
+    __tablename__ = 'reviews'
+
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String)
+    rating = db.Column(db.Integer)
+    member_id = db.Column(db.Integer, db.ForeignKey('members.id'))
+    instrument_id = db.Column(db.Integer, db.ForeignKey('instruments.id'))
 ```
+
+This displays the attributes for each instance of `Review`. As you can see, there are two `ForeignKeys` that constitute the `primary_key` for `Instrument` and `Member`.
+
+### Relationships
+
+
 
 ---
 
