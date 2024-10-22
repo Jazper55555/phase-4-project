@@ -202,6 +202,22 @@ class Instruments(Resource):
 
         return make_response(jsonify(response), 200)
 
+@app.route('/reviews/ratings/5')
+def getRatings():
+    fiveStarReviews = Review.query.filter(Review.rating==5).all()
+    response = []
+
+    for review in fiveStarReviews:
+        review_data = {
+            'id': review.id,
+            'content': review.content,
+            'instrument_id': review.instrument_id,
+            'member_id': review.member_id
+        }
+        response.append(review_data)
+
+    return make_response(jsonify(fiveStarReviews), 200)
+
 
 class InstrumentsById(Resource):
     def get(self, id):
