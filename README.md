@@ -13,14 +13,19 @@ Fork and clone this repo from Github. The Project URL can be found here:
 - [Percussion Playground](https://github.com/Jazper55555/phase-4-project) 
 
 Once you fork the repo over, you'll need to download the necessary packages by running the following commands:
+
 `npm install --prefix client`
+
 `pipenv install && pipenv shell`
 
 This will also get you running a Flask shell which is necessary for executing `python` oriented commands. Because the backend server is running via Render, you only need to run the front end React Application locally by typing the following command:
+
 `npm start --prefix client`
 
 This should start the application on the following port:
+
 `Local:            http://localhost:3000`
+
 `On Your Network:  http://10.251.14.187:3000`
 
 You should see _Percussion Playground_ displayed in the browser!
@@ -59,13 +64,6 @@ Following the root directory structure below, there is a brief discussion on the
 
 A `migrations` folder will be added to the `server` directory in a later step.
 
-The `client` folder contains a basic React application, while the `server`
-folder contains a basic Flask application. You will adapt both folders to
-implement the code for your project .
-
-NOTE: If you did not previously install `tree` in your environment setup, MacOS
-users can install this with the command `brew install tree`. WSL and Linux users
-can run `sudo apt-get install tree` to download it as well.
 
 ## Where Do I Start?
 
