@@ -309,7 +309,7 @@ Allows a specific user/member to sign in based on their credentials (name & emai
 
 #### `SignUpModal.js`
 
-Houses the <Modal> found in `CreateAccount.js`.
+Houses the `<Modal>` found in `CreateAccount.js`.
 
 ## Resources
 
