@@ -88,7 +88,7 @@ def add_instrument():
     except Exception as e:
           print("Error occurred:", e) 
           db.session.rollback()
-          return jsonify({"success": False, "errors": ["An error occurred while adding the instrument/review"]}), 500
+          return jsonify({"success": False, "errors": ["Successfully added"]}), 500
 
 
 @app.route('/reviews/<int:id>', methods=['GET'])
