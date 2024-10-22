@@ -5,6 +5,10 @@
 - Create a full-stack application using React and Flask with a backend server deployed through Render
 - Create a communal space for drummers/percussionists to talk shop with the myriad of instruments from around the world
 
+## Walkthrough
+
+[![Percussion Playground](/Percussion-Playground-Thumbnail.png)](https://youtu.be/Uvv0jUbXxKY)
+
 ---
 
 ## Introduction/Setup
@@ -70,7 +74,7 @@ Note: My `instance` and `migrations` files were for initially configuring my loc
 
 ---
 
-## Client Folder
+## Server Folder
 
 ### `app.py`
 
@@ -214,7 +218,49 @@ The table relationships are represented below:
 
 ![Table Relationship Diagram](/Phase-4-Project-Relationships-Diagram.png)
 
+### `seed.py`
+
+This file contains all of the seed data for the `Members`, `Instruments`, and `Reviews` tables. 
+
+- `Members` & `Reviews` are generated through Faker
+- `Instruments` are generated through hardcoded instances of the Instrument class
+
 ---
+
+## Client Folder
+
+#### `index.js`
+
+Contains the `Browser Router` and `Root` for my React application.
+
+#### `index.css`
+
+Contains ALL of the styling options for each component rendered in the browser application
+
+### Components Folder
+
+This houses all of the components that comrpise the Front-End of the React application. Here is a visual representation of the directory:
+
+``` console
+.
+├── components
+│   ├── AddInstrument.js
+│   ├── AddReview.js
+│   ├── App.js
+│   ├── CreateAccount.js
+│   ├── Home.js
+│   ├── InstrumentDetails.js
+│   ├── Instruments.js
+│   ├── MemberDetails.js
+│   ├── Members.js
+│   ├── NavBar.js
+│   ├── SignIn.js
+│   └── SignUpModal.js
+├── index.css
+└── index.js
+```
+
+
 
 ## Resources
 
