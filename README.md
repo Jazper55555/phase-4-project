@@ -1,34 +1,58 @@
-# Phase 4 Full-Stack Application Project Template
+# Percussion Playground - A Full-Stack Application
 
-## Learning Goals
+## Purpose
 
-- Discuss the basic directory structure of a full-stack Flask/React application.
-- Carry out the first steps in creating your Phase 4 project.
+- Create a full-stack application using React and Flask with a backend server deployed through Render
+- Create a communal space for drummers/percussionists to talk shop with the myriad of instruments from around the world
 
 ---
 
-## Introduction
+## Introduction/Setup
 
-Fork and clone this lesson for a template for your full-stack application. Take
-a look at the directory structure before we begin (NOTE: node_modules will be
-generated in a subsequent step):
+Fork and clone this repo from Github. The Project URL can be found here:
+- [Percussion Playground](https://github.com/Jazper55555/phase-4-project) 
+
+Once you fork the repo over, you'll need to download the necessary packages by running the following commands:
+`npm install --prefix client`
+`pipenv install && pipenv shell`
+
+This will also get you running a Flask shell which is necessary for executing `python` oriented commands. Because the backend server is running via Render, you only need to run the front end React Application locally by typing the following command:
+`npm start --prefix client`
+
+This should start the application on the following port:
+`Local:            http://localhost:3000`
+`On Your Network:  http://10.251.14.187:3000`
+
+You should see _Percussion Playground_ displayed in the browser!
+
+
+## Directory Structure
+
+Following the root directory structure below, there is a brief discussion on the function and purpose of each .js and .py file located in the `client` & `server` folders.
 
 ```console
-$ tree -L 2
-$ # the -L argument limits the depth at which we look into the directory structure
 .
 ├── CONTRIBUTING.md
 ├── LICENSE.md
 ├── Pipfile
+├── Pipfile.lock
 ├── README.md
 ├── client
-│   ├── README.md
-│   ├── package.json
-│   ├── public
-│   └── src
+│   ├── README.md
+│   ├── node_modules
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   └── src
+├── package-lock.json
+├── requirements.txt
 └── server
+    ├── __pycache__
     ├── app.py
     ├── config.py
+    ├── inspect_db.py
+    ├── instance
+    ├── migrations
     ├── models.py
     └── seed.py
 ```
